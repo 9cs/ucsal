@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class modularizacaoFibonacci {
+public class fibonacci {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
