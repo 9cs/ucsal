@@ -4,7 +4,7 @@ import java.util.Scanner;
 // deve ser feita dentro de uma função que retorne tal valor. A leitura e a escrita dos dados, além
 // da ativação do módulo MMC, devem ficar na função principal.
 
-public class modularizacaoMMC {
+public class qmmc {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.print("Digite um numero: ");
