@@ -1,6 +1,10 @@
 import java.util.Scanner;
 
-public class modularizacaoPrimos {
+// Faça um programa que calcule a soma dos N primeiros números primos, sendo N definido
+// pelo usuário na função main. O programa ainda deverá ter a função primo responsável por
+// verificar se o número em questão é primo ou não.
+
+public class primos {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Digite a quantidade de números primos que deseja somar: ");
