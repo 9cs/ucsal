@@ -87,6 +87,6 @@ public class calculadora {
 
     // Função de divisão
     public static double divisao(int a, int b) {
-        return (double) (a /b); // eh preciso por o cast do double para nao perder as casas decimais
+        return ((double) a /b); // eh preciso por o cast do double para nao perder as casas decimais
     }
 }
