@@ -12,12 +12,12 @@ public class fibonacci {
         System.out.print("Digite qual termo da sequência de Fibonacci deseja: ");
         int n = sc.nextInt();
 
-        int termo = fibonacci(n);
+        int termo = mfibonacci(n);
 
         System.out.println("O " + n + "º termo da sequência de Fibonacci é: " + termo);
     }
 
-    public static int fibonacci(int n) {
+    public static int mfibonacci(int n) {
         if (n == 1 || n == 2) {
             return 1;
         }
