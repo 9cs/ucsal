@@ -1,7 +1,13 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class vetor5 {
+// Faça uma função que receba um vetor
+// com 50 números inteiros e um número.
+// Ao final a função deve devolver quantas
+// vezes o número recebido aparece no
+// vetor.
+
+public class contadorVetor {
     public static void main(String[] args) {
         System.out.print("Digite um número para verificar no vetor: ");
         print(preencher());
