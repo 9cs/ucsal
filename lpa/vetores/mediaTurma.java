@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
-public class vetor6 {
+// Faça uma função que receba um vetor
+// com as médias finais dos alunos de uma
+// turma e a quantidade de alunos da
+// turma, calcule e devolva a média da
+// turma.
+
+public class mediaTurma {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.print("Digite a quantidade de alunos na turma: ");
