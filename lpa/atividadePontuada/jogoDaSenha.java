@@ -53,7 +53,7 @@ public class jogoDaSenha {
 
     public static void gerarSenha(int[] senha, Random rand) {
         for (int i = 0; i < senha.length; i++) {
-            senha[i] = rand.nextInt(6) + 1; // números de 1 a 6 (excluindo o zero)
+            senha[i] = rand.nextInt(6) + 1;
         }
     }
 
