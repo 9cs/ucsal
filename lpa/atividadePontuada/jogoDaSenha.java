@@ -1,5 +1,3 @@
-package vetores;
-
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,98 +7,121 @@ public class jogoDaSenha {
         Scanner input = new Scanner(System.in);
         Random rand = new Random();
 
-        boolean debugMode = false;
-        int nivel = 1;
-        boolean jogando = true;
+        boolean debugMode = true; // alterar para false para esconder a senha
 
-        System.out.println("=== Jogo da Senha ===");
+        int[] senha = new int[4];
+        int[] tentativa = new int[4];
 
-        while (jogando) {
-            boolean completouNivel = jogarNivel(input, rand, nivel, debugMode);
+        gerarSenha(senha, rand);
 
-            if (completouNivel) {
-                System.out.print("Parabéns! Você completou o nível" + nivel);
-                nivel++;
-            } else {
-                jogando = false;
+        System.out.println("=== Jogo da Senha (Mastermind) ===");
+        System.out.println("A senha possui 4 dígitos, cada um de 1 a 6.");
+        System.out.println("Tente adivinhar a senha em até 10 tentativas!");
+
+        if (debugMode) {
+            mostrarSenhaDebug(senha);
+        }
+
+        boolean venceu = false;
+        int tentativas = 0;
+
+        while (tentativas < 10 && !venceu) {
+            tentativas++;
+            System.out.println("\nTentativa " + tentativas + ":");
+            System.out.print("Digite 4 números de 1 a 6, separados por espaço: ");
+            lerTentativa(tentativa, input);
+
+            int corretos = contarCorretos(senha, tentativa);
+            int deslocados = contarDeslocados(senha, tentativa);
+
+            System.out.println("Dígitos corretos (posição certa): " + corretos);
+            System.out.println("Dígitos corretos (posição errada): " + deslocados);
+
+            if (corretos == 4) {
+                venceu = true;
+                System.out.println("\nParabéns! Você descobriu a senha em " + tentativas + " tentativas!");
             }
         }
-        System.out.println("Obrigado por jogar!");
+
+        if (!venceu) {
+            System.out.print("\nVocê perdeu! A senha correta era: ");
+            mostrarSenha(senha);
+        }
+
+        input.close();
     }
 
-    public static void exibirInformacoesNivel(int nivel, int alcance) {
-        System.out.println("\n--- Nível " + nivel + " (valores de 1 a " + alcance + ") --- ");
-        System.out.println("Repita sequências crescentes até completar 10 rodadas.");
+    public static void gerarSenha(int[] senha, Random rand) {
+        for (int i = 0; i < senha.length; i++) {
+            senha[i] = rand.nextInt(6) + 1; // números de 1 a 6 (excluindo o zero)
+        }
     }
 
-    public static int gerarProximoNumeroSequencia(Random rand, int alcance) {
-        return rand.nextInt(alcance) + 1;
+    public static void lerTentativa(int[] tentativa, Scanner input) {
+        for (int i = 0; i < tentativa.length; i++) {
+            int valor = 0;
+            boolean valido = false;
+            while (!valido) {
+                if (input.hasNextInt()) {
+                    valor = input.nextInt();
+                    if (valor >= 1 && valor <= 6) {
+                        valido = true;
+                    } else {
+                        System.out.print("Número fora do intervalo. Digite um número de 1 a 6: ");
+                    }
+                } else {
+                    System.out.print("Entrada inválida. Digite um número de 1 a 6: ");
+                    input.next();
+                }
+            }
+            tentativa[i] = valor;
+        }
     }
 
-    public static void exibirSequenciaDebug(int[] sequencia, int tamanho) {
-        System.out.print("Sequência: ");
-        for (int j = 0; j < tamanho; j++) {
-            System.out.print(sequencia[j] + " ");
+    public static int contarCorretos(int[] senha, int[] tentativa) {
+        int corretos = 0;
+        for (int i = 0; i < senha.length; i++) {
+            if (tentativa[i] == senha[i]) {
+                corretos++;
+            }
+        }
+        return corretos;
+    }
+
+    public static int contarDeslocados(int[] senha, int[] tentativa) {
+        boolean[] senhaUsada = new boolean[senha.length];
+        boolean[] tentativaUsada = new boolean[senha.length];
+
+        for (int i = 0; i < senha.length; i++) {
+            if (tentativa[i] == senha[i]) {
+                senhaUsada[i] = true;
+                tentativaUsada[i] = true;
+            }
+        }
+
+        int deslocados = 0;
+        for (int i = 0; i < tentativa.length; i++) {
+            if (!tentativaUsada[i]) {
+                for (int j = 0; j < senha.length; j++) {
+                    if (!senhaUsada[j] && tentativa[i] == senha[j]) {
+                        deslocados++;
+                        senhaUsada[j] = true;
+                    }
+                }
+            }
+        }
+        return deslocados;
+    }
+
+    public static void mostrarSenha(int[] senha) {
+        for (int i = 0; i < senha.length; i++) {
+            System.out.print(senha[i] + " ");
         }
         System.out.println();
     }
-
-    public static int[] lerTentativaUsuario(Scanner input, int tamanho) {
-        int[] tentativa = new int[tamanho];
-        System.out.println(
-                "Digite a sequência completa, separados por espaço:"
-        );
-        for (int j = 0; j < tamanho; j++) {
-            while (!input.hasNextInt()) {
-                System.out.print("Entrada inválida. Digite um inteiro: ");
-                input.next();
-            }
-            tentativa[j] = input.nextInt();
-        }
-        return tentativa;
-    }
-
-    public static boolean verificarTentativa(int[] sequenciaOriginal, int[] tentativaUsuario, int tamanho) {
-        boolean acertou = true;
-        int i = 0;
-        while (i < tamanho && acertou) {
-            if (tentativaUsuario[i] != sequenciaOriginal[i]) {
-                acertou = false;
-            }
-            i++;
-        }
-        return acertou;
-    }
-
-    public static boolean jogarNivel(Scanner input, Random rand, int nivel, boolean debugMode) {
-        int alcance = nivel * 3;
-        exibirInformacoesNivel(nivel, alcance);
-
-        int[] sequencia = new int[10]; // Máximo de 10 números na sequência
-        int rodada = 1;
-        int tamanhoAtualDaSequencia = 0;
-        boolean nivelEmAndamento = true;
-
-        while (rodada <= 10 && nivelEmAndamento) {
-            sequencia[tamanhoAtualDaSequencia] = gerarProximoNumeroSequencia(rand, alcance);
-            tamanhoAtualDaSequencia++;
-
-            if (debugMode) {
-                exibirSequenciaDebug(sequencia, tamanhoAtualDaSequencia);
-            }
-
-            int[] tentativa = lerTentativaUsuario(input, tamanhoAtualDaSequencia);
-            boolean acertouRodada = verificarTentativa(sequencia, tentativa, tamanhoAtualDaSequencia);
-
-            if (acertouRodada) {
-                System.out.println("Correto! Próxima rodada.");
-                rodada++;
-            } else {
-                System.out.println("Errado! Fim de jogo.");
-                System.out.printf("Você alcançou a rodada %d do nível %d.%n", rodada, nivel);
-                nivelEmAndamento = false;
-            }
-        }
-        return nivelEmAndamento;
+    
+    public static void mostrarSenhaDebug(int[] senha) {
+        System.out.print("[DEBUG] Senha correta: ");
+        mostrarSenha(senha);
     }
 }
