@@ -7,7 +7,7 @@ public class jogoDaSenha {
         Scanner input = new Scanner(System.in);
         Random rand = new Random();
 
-        boolean debugMode = true; // alterar para false para esconder a senha
+        boolean debugMode = true;
 
         int[] senha = new int[4];
         int[] tentativa = new int[4];
